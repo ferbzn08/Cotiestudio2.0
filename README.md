@@ -1,14 +1,16 @@
-# CotiStudio v4 — Corrección de franjas
+# CotiStudio v5 — edición de elementos corregida
 
 ## Cambios
-- La herramienta `Franja de ancho completo` crea un elemento de tipo `band` real, no un rectángulo genérico.
-- La franja ocupa el 100% del ancho de la página.
-- El tirador de redimensionado queda centrado y modifica solo la altura, no reduce el ancho.
-- Exportación PDF dibuja la franja a lo ancho de la página.
-- Se mantiene el PDF original como fondo para evitar duplicar texto.
+- Corregido el flujo de arrastre: la selección ya no reemplaza el nodo DOM antes de comenzar a moverlo.
+- El arrastre y el redimensionamiento se manejan con listeners de documento y coordenadas relativas a la página.
+- Se actualizan las posiciones del elemento en tiempo real sin volver a dibujar el lienzo en cada movimiento.
+- Tirador de redimensionamiento más grande para pantallas táctiles.
+- Las bandas del diseño rápido se crean como elementos `band` y no como rectángulos genéricos.
+- Las bandas empiezan a ancho completo, pero pueden moverse verticalmente y redimensionarse desde el tirador.
+- Se puede corregir posición y tamaño desde los campos X, Y, ancho y alto.
 
-## Actualización
-Reemplaza el `index.html` de la raíz del repositorio por este archivo y confirma los cambios. Espera la publicación de GitHub Pages y recarga la página. Si el navegador conserva la versión anterior, haz una recarga forzada.
+## Instalación
+Reemplaza `index.html` en la raíz del repositorio GitHub y espera a que GitHub Pages publique el cambio. Recarga la página de forma completa. Si tienes un proyecto viejo abierto, elimina las franjas pequeñas defectuosas y vuelve a añadirlas; los elementos guardados antiguos no se transforman automáticamente.
 
-## Nota
-No se ha podido probar el editor en un navegador real dentro de esta ejecución. Prueba con una copia de un PDF y revisa el resultado antes de usarlo comercialmente.
+## Limitación
+El PDF importado sigue siendo un fondo visual rasterizado; este cambio corrige la manipulación de los elementos añadidos, no convierte el contenido original del PDF en objetos editables.
