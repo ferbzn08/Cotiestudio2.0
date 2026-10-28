@@ -1,24 +1,14 @@
-# CotiStudio — revisión de importación y franjas
+# CotiStudio v4 — Corrección de franjas
 
-## Cambios de esta revisión
-- El PDF se importa como fondo visual sin volver a generar capas de texto detectado; evita que el texto original se duplique y se superponga.
-- Nuevo botón **Franja**: crea una banda horizontal de ancho completo, editable y con color corporativo azul marino. Puede cambiarse el color desde Propiedades.
-- Se mantiene el botón Rectángulo para formas de tamaño libre.
-- Se actualizaron las instrucciones para explicar que el fondo original se conserva visualmente, pero no se convierte en texto u objetos editables.
-- Se pulió el encabezado y el comportamiento de los controles en pantallas pequeñas.
+## Cambios
+- La herramienta `Franja de ancho completo` crea un elemento de tipo `band` real, no un rectángulo genérico.
+- La franja ocupa el 100% del ancho de la página.
+- El tirador de redimensionado queda centrado y modifica solo la altura, no reduce el ancho.
+- Exportación PDF dibuja la franja a lo ancho de la página.
+- Se mantiene el PDF original como fondo para evitar duplicar texto.
 
-## Uso
-1. Importa el PDF.
-2. El documento original se mostrará sin texto duplicado.
-3. Añade una **Franja** para crear una banda horizontal; selecciona la banda para ajustar su posición, altura y color.
-4. Si la banda debe tapar contenido existente, ten presente que lo cubrirá. Para reemplazar texto, usa **Cubrir zona** y luego añade un texto nuevo.
-5. Exporta y revisa visualmente todas las páginas.
+## Actualización
+Reemplaza el `index.html` de la raíz del repositorio por este archivo y confirma los cambios. Espera la publicación de GitHub Pages y recarga la página. Si el navegador conserva la versión anterior, haz una recarga forzada.
 
-## Límites conocidos
-- El PDF original se rasteriza para preservar su apariencia y dibujos; el contenido original de fondo no es editable como texto.
-- Las capas añadidas son editables, pero la exportación sigue siendo rasterizada y el texto exportado no es seleccionable.
-- Esta revisión pasó la comprobación sintáctica de JavaScript; no equivale a una prueba completa en todos los navegadores/dispositivos.
-- Las librerías PDF.js y pdf-lib se cargan desde CDN y requieren conexión a internet.
-
-## Publicación en GitHub Pages
-Sube este `index.html` a la raíz del repositorio y confirma el cambio. No subas únicamente el ZIP: GitHub Pages necesita que `index.html` esté en la raíz publicada.
+## Nota
+No se ha podido probar el editor en un navegador real dentro de esta ejecución. Prueba con una copia de un PDF y revisa el resultado antes de usarlo comercialmente.
