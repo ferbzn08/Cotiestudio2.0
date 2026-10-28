@@ -1,16 +1,13 @@
-# CotiStudio v5 — edición de elementos corregida
+# CotiStudio v6
 
-## Cambios
-- Corregido el flujo de arrastre: la selección ya no reemplaza el nodo DOM antes de comenzar a moverlo.
-- El arrastre y el redimensionamiento se manejan con listeners de documento y coordenadas relativas a la página.
-- Se actualizan las posiciones del elemento en tiempo real sin volver a dibujar el lienzo en cada movimiento.
-- Tirador de redimensionamiento más grande para pantallas táctiles.
-- Las bandas del diseño rápido se crean como elementos `band` y no como rectángulos genéricos.
-- Las bandas empiezan a ancho completo, pero pueden moverse verticalmente y redimensionarse desde el tirador.
-- Se puede corregir posición y tamaño desde los campos X, Y, ancho y alto.
+Cambios de esta versión:
+- Tema visual de la aplicación con rojo corporativo FireGroup y naranja como acento.
+- Arrastre implementado sin reconstruir el DOM mientras se mueve un elemento.
+- Manejo de puntero con captura y supresión del click posterior al arrastre.
+- Las franjas tienen control de altura central y conservan el ancho completo; al redimensionarlas solo cambia la altura.
+- Los tiradores quedan dentro del lienzo para que no los recorte el contenedor.
 
 ## Instalación
-Reemplaza `index.html` en la raíz del repositorio GitHub y espera a que GitHub Pages publique el cambio. Recarga la página de forma completa. Si tienes un proyecto viejo abierto, elimina las franjas pequeñas defectuosas y vuelve a añadirlas; los elementos guardados antiguos no se transforman automáticamente.
+Reemplaza el `index.html` en la raíz del **mismo repositorio que publica la URL que usas**. Después espera la publicación y haz recarga forzada.
 
-## Limitación
-El PDF importado sigue siendo un fondo visual rasterizado; este cambio corrige la manipulación de los elementos añadidos, no convierte el contenido original del PDF en objetos editables.
+Importante: si la URL es `https://ferbzn08.github.io/Cotiestudio2.0/`, el repositorio a actualizar normalmente es `Cotiestudio2.0`, no `Cotiestudio`. Verifica el nombre del repositorio en la dirección antes de reemplazar archivos.
