@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CotiStudio | Editor de cotizaciones</title>
+<style>
+:root{--brand:#b4232d;--accent:#263143;--bg:#f4f6fa;--panel:#fff;--ink:#202633;--muted:#748094;--line:#e4e8ef;--soft:#f7f8fb}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);font-size:14px}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 13px;background:var(--brand);color:#fff;font-weight:650}button:disabled{opacity:.4;cursor:not-allowed}.btn-secondary{background:#eef1f6;color:#273245}.btn-ghost{background:transparent;color:#4c586c;border:1px solid var(--line)}.btn-small{padding:7px 9px;font-size:12px}.iconbtn{width:35px;height:35px;padding:0;display:grid;place-items:center;background:#f2f4f8;color:#374151}
+header{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:14px;position:sticky;top:0;z-index:20}
+.logo{display:flex;align-items:center;gap:10px}.logo-mark{width:36px;height:36px;border-radius:11px;background:var(--brand);color:white;display:grid;place-items:center;font-size:19px;font-weight:850}.logo h1{font-size:17px;line-height:1.1;margin:0}.logo p{font-size:11px;color:var(--muted);margin:4px 0 0}.top-actions{display:flex;align-items:center;gap:8px}.save-status{font-size:11px;color:var(--muted);margin-right:5px}
+.app{display:grid;grid-template-columns:260px minmax(380px,1fr) 285px;min-height:calc(100vh - 68px)}
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:17px 15px;overflow:auto;max-height:calc(100vh - 68px);position:sticky;top:68px}.sidebar.right{border-right:0;border-left:1px solid var(--line)}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:.11em;color:#8a94a6;margin:3px 0 10px}.side-section{padding-bottom:17px;margin-bottom:17px;border-bottom:1px solid var(--line)}.side-section:last-child{border-bottom:0}.section-title{font-size:12px;font-weight:800;margin:0 0 12px;display:flex;align-items:center;justify-content:space-between}.field{margin:10px 0}.field label{display:block;font-size:11px;color:#596579;font-weight:700;margin-bottom:5px}.field input[type=text],.field input[type=number],.field select{width:100%;border:1px solid #dbe0e9;border-radius:8px;padding:9px 10px;outline:none;background:#fff;color:var(--ink)}.field input:focus,.field select:focus{border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 12%,transparent)}input[type=color]{width:100%;height:36px;padding:3px;border:1px solid var(--line);border-radius:8px;background:#fff}input[type=file]{width:100%;font-size:11px}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tool{width:100%;background:#fff;border:1px solid var(--line);color:#3c4759;display:flex;align-items:center;gap:10px;text-align:left;padding:10px;margin:6px 0;font-size:12px}.tool .ico{width:27px;height:27px;border-radius:7px;background:#f1f3f7;display:grid;place-items:center;font-size:15px}.tool.active{border-color:var(--brand);background:#fff8f8;color:var(--brand)}
+.template-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.template{background:#fff;color:#4c586c;border:1px solid var(--line);padding:8px 7px;text-align:left}.template.active{border:1.5px solid var(--brand);background:#fff8f8;color:var(--brand)}.template .sample{height:42px;border-radius:5px;margin-bottom:7px;background:#f5f6f8;overflow:hidden;position:relative}.sample:before{content:"";position:absolute;left:0;top:0;height:12px;width:100%;background:var(--brand)}.sample:after{content:"";position:absolute;left:9px;right:9px;top:21px;height:3px;background:#cbd1db;box-shadow:0 7px #e1e5eb,0 14px #e1e5eb}.template:nth-child(2) .sample:before{height:4px}.template:nth-child(3) .sample:before{height:42px;width:23%;background:var(--accent)}.template:nth-child(4) .sample:before{height:8px;background:var(--accent)}.template b{display:block;font-size:11px}.template span{font-size:10px;color:var(--muted)}
+.workspace{min-width:0;padding:20px 22px 30px}.workspace-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.workspace-head h2{font-size:18px;margin:0}.workspace-head p{font-size:12px;color:var(--muted);margin:4px 0 0}.mode-pill{background:#eaf6ee;color:#287247;border-radius:20px;padding:6px 10px;font-size:10px;font-weight:800;white-space:nowrap}
+.stage{border:1px solid #e0e5ed;border-radius:14px;background:#e9edf4;min-height:600px;padding:24px;overflow:auto}.stage-empty{max-width:410px;margin:80px auto;text-align:center;color:var(--muted)}.upload-icon{width:58px;height:58px;margin:0 auto 15px;border-radius:17px;background:#fff;display:grid;place-items:center;font-size:26px;color:var(--brand);box-shadow:0 3px 14px #2631430b}.stage-empty h3{color:var(--ink);font-size:17px;margin:0 0 7px}.stage-empty p{font-size:12px;line-height:1.6;margin:0 auto 17px;max-width:320px}.stage-empty .mini{font-size:10px;margin-top:12px}.dropzone{border:1px dashed #c3cad7;background:#ffffff80;border-radius:10px;padding:12px;margin:0 auto;max-width:310px}
+.page-wrap{position:relative;width:min(100%,650px);margin:0 auto 22px;background:#fff;box-shadow:0 8px 26px #2026331c;line-height:0}.page-wrap canvas{width:100%;height:auto;display:block}.page-overlay{position:absolute;inset:0;pointer-events:none}.overlay-item{position:absolute;pointer-events:auto;cursor:move;line-height:1.2;border:1px dashed transparent;padding:2px;user-select:none;white-space:pre-wrap;max-width:80%;overflow-wrap:anywhere}.overlay-item.selected{border:1px dashed var(--brand);outline:2px solid #b4232d22}.overlay-item img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}.page-count{font-size:11px;color:var(--muted);text-align:center;margin:12px}.right-note{font-size:11px;color:var(--muted);line-height:1.6}.notice{padding:10px;border-radius:9px;background:#fff7e6;border:1px solid #f3dda8;color:#785519;font-size:10px;line-height:1.55}.small-help{font-size:10px;color:var(--muted);line-height:1.55}.prop-actions{display:flex;gap:7px;margin-top:10px}.prop-actions button{flex:1}.hidden{display:none!important}.full{width:100%}.divider{height:1px;background:var(--line);margin:13px 0}.file-label{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--brand);color:#fff;border-radius:9px;padding:11px;font-size:12px;font-weight:700;cursor:pointer}.file-label input{display:none}.empty-props{text-align:center;padding:22px 7px;color:var(--muted);font-size:11px;line-height:1.6}.status-line{font-size:10px;color:var(--muted);line-height:1.5;margin-top:8px}
+@media(max-width:1100px){.app{grid-template-columns:230px minmax(330px,1fr)}.sidebar.right{grid-column:1/-1;position:static;max-height:none;border-left:0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.sidebar.right .side-section{border-bottom:0;margin:0}.workspace{padding:16px}.stage{padding:14px}}
+@media(max-width:720px){header{height:auto;min-height:62px;padding:10px 12px}.logo p{display:none}.top-actions .save-status{display:none}.top-actions button{padding:9px;font-size:11px}.app{display:flex;flex-direction:column}.sidebar{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line)}.sidebar.left{display:grid;grid-template-columns:1fr 1fr;gap:12px}.sidebar.left .side-section{margin:0}.sidebar.right{display:grid;grid-template-columns:1fr 1fr}.workspace{padding:12px}.stage{padding:10px;min-height:380px}.stage-empty{margin:45px auto}.sidebar.right .side-section:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="logo-mark">C</div><div><h1>CotiStudio</h1><p>Editor visual de cotizaciones PDF</p></div></div>
+  <div class="top-actions"><span class="save-status" id="saveStatus">Proyecto local · sin guardar</span><button class="btn-secondary" id="saveProject">Guardar proyecto</button><button id="exportPdf" disabled>Exportar PDF ↗</button></div>
+</header>
+<div class="app">
+  <aside class="sidebar left">
+    <div class="side-section">
+      <div class="eyebrow">INICIO</div><div class="section-title">Tu cotización</div>
+      <label class="file-label">＋ Importar PDF<input type="file" id="pdfInput" accept="application/pdf"></label>
+      <div class="status-line" id="importStatus">Carga un PDF para ver sus páginas y conservar sus dibujos originales en la vista de trabajo.</div>
+      <div class="divider"></div>
+      <button class="tool" id="addText"><span class="ico">T</span><span>Añadir texto editable</span></button>
+      <label class="file-label" style="background:#eef1f6;color:#344054;margin-top:7px">▧ Añadir imagen / logo<input type="file" id="imageInput" accept="image/png,image/jpeg,image/webp"></label>
+      <div class="small-help" style="margin-top:7px">Las imágenes que agregues se pueden mover y redimensionar. El PDF original se conserva como fondo visual.</div>
+    </div>
+    <div class="side-section">
+      <div class="eyebrow">DISEÑO</div><div class="section-title">Plantillas</div>
+      <div class="template-grid">
+        <button class="template active" data-template="corporate"><div class="sample"></div><b>Corporativa</b><span>Encabezado limpio</span></button>
+        <button class="template" data-template="minimal"><div class="sample"></div><b>Minimalista</b><span>Espacios amplios</span></button>
+        <button class="template" data-template="bold"><div class="sample"></div><b>Impacto</b><span>Banda lateral</span></button>
+        <button class="template" data-template="classic"><div class="sample"></div><b>Clásica</b><span>Formal</span></button>
+      </div>
+    </div>
+    <div class="side-section">
+      <div class="eyebrow">IDENTIDAD</div><div class="section-title">Marca y colores</div>
+      <div class="field"><label for="companyName">Nombre de empresa (elemento añadido)</label><input id="companyName" type="text" value="FIREGROUP S.R.L."></div>
+      <div class="two"><div class="field"><label for="brandColor">Color principal</label><input type="color" id="brandColor" value="#b4232d"></div><div class="field"><label for="accentColor">Color secundario</label><input type="color" id="accentColor" value="#263143"></div></div>
+      <div class="small-help">La plantilla cambia los elementos del editor. No altera automáticamente los píxeles del PDF original.</div>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <div class="workspace-head"><div><h2>Área de trabajo</h2><p>Importa, revisa y agrega elementos sobre tu cotización.</p></div><span class="mode-pill" id="modePill">LISTO PARA IMPORTAR</span></div>
+    <div class="stage" id="stage">
+      <div class="stage-empty" id="emptyState">
+        <div class="upload-icon">⇧</div><h3>Empieza con tu cotización</h3>
+        <p>Importa el PDF original. CotiStudio mostrará cada página como fondo para mantener visibles sus dibujos, imágenes y distribución original.</p>
+        <div class="dropzone"><label class="file-label">Seleccionar PDF<input type="file" id="pdfInputAlt" accept="application/pdf"></label></div>
+        <div class="mini">Los archivos se procesan localmente en tu navegador en esta versión de prueba.</div>
+      </div>
+      <div id="pages"></div>
+    </div>
+    <div class="page-count" id="pageCount"></div>
+  </main>
+
+  <aside class="sidebar right">
+    <div class="side-section">
+      <div class="eyebrow">PROPIEDADES</div><div class="section-title">Elemento seleccionado</div>
+      <div id="noSelection" class="empty-props">Selecciona un texto o una imagen añadida para editar sus propiedades.</div>
+      <div id="properties" class="hidden">
+        <div class="field"><label for="propText">Texto</label><input id="propText" type="text"></div>
+        <div class="field"><label for="propColor">Color del texto</label><input type="color" id="propColor" value="#b4232d"></div>
+        <div class="field"><label for="propSize">Tamaño</label><input type="number" id="propSize" min="8" max="72" value="18"></div>
+        <div class="field"><label for="propWidth">Ancho (%)</label><input type="number" id="propWidth" min="5" max="100" value="30"></div>
+        <div class="field"><label for="propBold">Estilo</label><select id="propBold"><option value="normal">Regular</option><option value="bold">Negrita</option></select></div>
+        <div class="prop-actions"><button class="btn-secondary" id="deleteElement">Eliminar</button><button id="duplicateElement">Duplicar</button></div>
+      </div>
+    </div>
+    <div class="side-section">
+      <div class="eyebrow">PÁGINA</div><div class="section-title">Documento original</div>
+      <p class="right-note">Las páginas originales se muestran como imágenes de alta resolución para conservar sus dibujos. Puedes añadir textos y nuevas imágenes encima.</p>
+      <div class="notice">Esta primera versión todavía no separa automáticamente cada texto, precio o dibujo del PDF. El fondo original permanece intacto; los elementos añadidos sí se pueden editar.</div>
+    </div>
+    <div class="side-section">
+      <div class="eyebrow">PROYECTO</div><div class="section-title">Guardar y continuar</div>
+      <p class="right-note">Guarda un archivo de proyecto para reabrirlo después en este navegador o compartirlo con otro equipo. La sincronización entre dispositivos y el enlace permanente se configurarán en la siguiente fase.</p>
+      <button class="btn-secondary full" id="loadProject">Abrir proyecto guardado</button>
+      <input type="file" id="projectInput" accept=".json,application/json" class="hidden">
+    </div>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+(() => {
+  const $=id=>document.getElementById(id);
+  const state={pdfBytes:null,pdfName:"",pdfDoc:null,pages:[],elements:[],selected:null,template:"corporate",brand:"#b4232d",accent:"#263143",company:"FIREGROUP S.R.L.",imageAssets:[]};
+  if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  function status(s){$("importStatus").textContent=s}
+  function updateBrand(){document.documentElement.style.setProperty("--brand",state.brand);document.documentElement.style.setProperty("--accent",state.accent);document.querySelectorAll(".template").forEach(b=>b.classList.toggle("active",b.dataset.template===state.template))}
+  function makePageShell(index,canvas){
+    const wrap=document.createElement("div");wrap.className="page-wrap";wrap.dataset.page=index;
+    canvas.dataset.page=index;wrap.appendChild(canvas);
+    const overlay=document.createElement("div");overlay.className="page-overlay";overlay.dataset.overlay=index;wrap.appendChild(overlay);
+    $("pages").appendChild(wrap);
+    return {wrap,overlay,canvas};
+  }
+  async function loadPdf(file){
+    if(!file)return;
+    if(!window.pdfjsLib){status("No se pudo cargar PDF.js. Comprueba la conexión y recarga.");return}
+    status("Procesando PDF…");$("modePill").textContent="IMPORTANDO";$("pages").innerHTML="";$("emptyState").classList.add("hidden");state.elements=[];state.pages=[];
+    try{
+      state.pdfName=file.name;state.pdfBytes=new Uint8Array(await file.arrayBuffer());
+      const pdf=await pdfjsLib.getDocument({data:state.pdfBytes.slice()}).promise;state.pdfDoc=pdf;
+      for(let i=1;i<=pdf.numPages;i++){
+        const page=await pdf.getPage(i);const viewport=page.getViewport({scale:1.65});
+        const canvas=document.createElement("canvas");canvas.width=Math.round(viewport.width);canvas.height=Math.round(viewport.height);
+        const ctx=canvas.getContext("2d");await page.render({canvasContext:ctx,viewport}).promise;
+        const shell=makePageShell(i-1,canvas);
+        state.pages.push({canvas,overlay:shell.overlay,viewport:{width:canvas.width,height:canvas.height},originalIndex:i-1});
+      }
+      $("pageCount").textContent=pdf.numPages+" página(s) · "+file.name;
+      $("modePill").textContent="PDF CARGADO";$("exportPdf").disabled=false;
+      status("PDF cargado. Las páginas se mantienen como fondo visual, incluidos los dibujos que ya contiene.");
+      $("saveStatus").textContent="Cambios sin guardar";renderElements();
+    }catch(e){status("Error al leer el PDF: "+e.message);$("emptyState").classList.remove("hidden");$("modePill").textContent="ERROR"}
+  }
+  function addElement(type,opts={}){
+    if(!state.pages.length){alert("Primero importa una cotización PDF.");return}
+    const page=opts.page??0;
+    const el={id:"el_"+Date.now()+"_"+Math.random().toString(36).slice(2,7),type,page,x:opts.x??.12,y:opts.y??.12,w:opts.w??.35,h:opts.h??.08,text:opts.text??(type==="text"?"Nuevo texto":"Imagen"),color:opts.color??state.brand,size:opts.size??20,bold:opts.bold??"bold",src:opts.src??null};
+    state.elements.push(el);selectElement(el.id);renderElements();$("saveStatus").textContent="Cambios sin guardar";
+  }
+  function renderElements(){
+    state.pages.forEach(p=>p.overlay.innerHTML="");
+    for(const el of state.elements){
+      const p=state.pages[el.page];if(!p)continue;
+      const node=document.createElement("div");node.className="overlay-item"+(state.selected===el.id?" selected":"");node.dataset.id=el.id;
+      node.style.left=(el.x*100)+"%";node.style.top=(el.y*100)+"%";node.style.width=(el.w*100)+"%";node.style.minHeight=(el.h*100)+"%";
+      node.style.color=el.color;node.style.fontSize=`${Math.max(8,el.size)}px`;node.style.fontWeight=el.bold;node.style.background=el.type==="text"?"#ffffffc9":"transparent";
+      if(el.type==="image"&&el.src){node.innerHTML=`<img alt="Imagen añadida" src="${el.src}">`;node.style.height=(el.h*100)+"%";node.style.minHeight="25px"}
+      else node.textContent=el.text;
+      node.addEventListener("pointerdown",e=>startDrag(e,el,node));
+      node.addEventListener("click",e=>{e.stopPropagation();selectElement(el.id)});
+      p.overlay.appendChild(node);
+    }
+  }
+  function startDrag(e,el,node){
+    e.preventDefault();e.stopPropagation();selectElement(el.id);
+    const p=state.pages[el.page], rect=p.canvas.getBoundingClientRect();const sx=e.clientX,sy=e.clientY,ox=el.x,oy=el.y;
+    node.setPointerCapture?.(e.pointerId);
+    const move=ev=>{el.x=Math.min(.96,Math.max(0,ox+(ev.clientX-sx)/rect.width));el.y=Math.min(.96,Math.max(0,oy+(ev.clientY-sy)/rect.height));node.style.left=(el.x*100)+"%";node.style.top=(el.y*100)+"%";$("saveStatus").textContent="Cambios sin guardar"};
+    const up=()=>{window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);refreshProps()};
+    window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);
+  }
+  function selectElement(id){
+    state.selected=id;const el=state.elements.find(x=>x.id===id);
+    $("noSelection").classList.toggle("hidden",!!el);$("properties").classList.toggle("hidden",!el);
+    if(el){$("propText").value=el.type==="image"?"Imagen":el.text;$("propText").disabled=el.type==="image";$("propColor").value=el.color;$("propSize").value=el.size;$("propWidth").value=Math.round(el.w*100);$("propBold").value=el.bold}
+    renderElements();
+  }
+  function refreshProps(){
+    const el=state.elements.find(x=>x.id===state.selected);if(!el)return;
+    el.text=$("propText").value;el.color=$("propColor").value;el.size=Number($("propSize").value)||18;el.w=Math.max(.05,Math.min(1,(Number($("propWidth").value)||30)/100));el.bold=$("propBold").value;
+    renderElements();$("saveStatus").textContent="Cambios sin guardar";
+  }
+  ["propText","propColor","propSize","propWidth","propBold"].forEach(id=>$(id).addEventListener("input",refreshProps));
+  $("deleteElement").addEventListener("click",()=>{state.elements=state.elements.filter(x=>x.id!==state.selected);state.selected=null;selectElement(null);renderElements()});
+  $("duplicateElement").addEventListener("click",()=>{const el=state.elements.find(x=>x.id===state.selected);if(el)addElement(el.type,{...el,x:Math.min(.85,el.x+.03),y:Math.min(.9,el.y+.03)})});
+  $("addText").addEventListener("click",()=>addElement("text"));
+  $("imageInput").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;if(f.size>8*1024*1024){alert("La imagen debe pesar menos de 8 MB.");return}const src=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});addElement("image",{src,w:.2,h:.15,text:f.name});e.target.value=""});
+  $("pdfInput").addEventListener("change",e=>loadPdf(e.target.files[0]));$("pdfInputAlt").addEventListener("change",e=>loadPdf(e.target.files[0]));
+  $("brandColor").addEventListener("input",e=>{state.brand=e.target.value;updateBrand()});$("accentColor").addEventListener("input",e=>{state.accent=e.target.value;updateBrand()});
+  $("companyName").addEventListener("input",e=>{state.company=e.target.value;$("saveStatus").textContent="Cambios sin guardar"});
+  document.querySelectorAll(".template").forEach(b=>b.addEventListener("click",()=>{state.template=b.dataset.template;updateBrand();applyTemplate()}));
+  function applyTemplate(){
+    document.querySelectorAll(".page-wrap").forEach(w=>{
+      const page=w.querySelector("canvas");let layer=w.querySelector(".design-layer");if(layer)layer.remove();
+      layer=document.createElement("div");layer.className="design-layer";layer.style.cssText="position:absolute;inset:0;pointer-events:none;overflow:hidden";
+      const band=document.createElement("div");
+      if(state.template==="corporate"){band.style.cssText=`height:4%;background:${state.brand};border-bottom:4px solid ${state.accent};opacity:.95`}
+      else if(state.template==="minimal"){band.style.cssText=`height:1.2%;background:${state.brand}`}
+      else if(state.template==="bold"){band.style.cssText=`position:absolute;left:0;top:0;bottom:0;width:3.5%;background:${state.accent};border-right:5px solid ${state.brand}`}
+      else {band.style.cssText=`height:2.5%;background:${state.accent};border-bottom:3px solid ${state.brand}`}
+      layer.appendChild(band);w.appendChild(layer);
+    });
+    $("saveStatus").textContent="Cambios sin guardar";
+  }
+  async function exportPdf(){
+    if(!state.pages.length||!window.PDFLib)return;
+    const btn=$("exportPdf");btn.disabled=true;btn.textContent="Generando…";
+    try{
+      const {PDFDocument}=PDFLib;const out=await PDFDocument.create();
+      for(let i=0;i<state.pages.length;i++){
+        const p=state.pages[i],wrap=p.canvas.closest(".page-wrap");
+        const clone=document.createElement("canvas");clone.width=p.canvas.width;clone.height=p.canvas.height;
+        const ctx=clone.getContext("2d");ctx.drawImage(p.canvas,0,0);
+        const layer=wrap.querySelector(".design-layer");
+        if(layer){
+          const band=layer.firstElementChild;
+          ctx.fillStyle=band.style.backgroundColor||state.brand;
+          if(state.template==="bold"){ctx.fillRect(0,0,clone.width*.035,clone.height);ctx.fillStyle=state.brand;ctx.fillRect(clone.width*.035,0,5,clone.height)}
+          else {let height=state.template==="corporate"?.04:state.template==="minimal"?.012:.025;ctx.fillRect(0,0,clone.width,clone.height*height)}
+        }
+        for(const el of state.elements.filter(x=>x.page===i)){
+          const x=el.x*clone.width,y=el.y*clone.height,w=el.w*clone.width,h=el.h*clone.height;
+          if(el.type==="text"){
+            ctx.fillStyle="#ffffffd9";ctx.fillRect(x-2,y-2,w+4,Math.max(h,el.size*1.5)+4);
+            ctx.fillStyle=el.color;ctx.font=`${el.bold==="bold"?"bold ":""}${el.size}px Arial`;ctx.textBaseline="top";
+            const words=el.text.split(/\s+/);let line="",yy=y;for(const word of words){const test=line?line+" "+word:word;if(ctx.measureText(test).width>w&&line){ctx.fillText(line,x,yy);yy+=el.size*1.3;line=word}else line=test}if(line)ctx.fillText(line,x,yy);
+          }else if(el.type==="image"&&el.src){const img=new Image();img.src=el.src;await new Promise(resolve=>{img.onload=resolve;img.onerror=resolve});if(img.complete&&img.naturalWidth)ctx.drawImage(img,x,y,w,h)}
+        }
+        const png=await new Promise(res=>clone.toBlob(res,"image/png"));const bytes=new Uint8Array(await png.arrayBuffer());const embedded=await out.embedPng(bytes);
+        const original=await state.pdfDoc.getPage(i+1);const size=original.getSize();const page=out.addPage([size.width,size.height]);page.drawImage(embedded,{x:0,y:0,width:size.width,height:size.height});
+      }
+      out.setTitle("Cotización rediseñada - CotiStudio");
+      const bytes=await out.save();const blob=new Blob([bytes],{type:"application/pdf"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=(state.pdfName.replace(/\.pdf$/i,"")||"cotizacion")+"_cotistudio.pdf";a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+      status("PDF exportado. Revisa el resultado visualmente antes de enviarlo.");
+    }catch(e){alert("No se pudo exportar: "+e.message)}
+    finally{btn.disabled=false;btn.textContent="Exportar PDF ↗"}
+  }
+  $("exportPdf").addEventListener("click",exportPdf);
+  function projectData(){return {version:1,pdfName:state.pdfName,template:state.template,brand:state.brand,accent:state.accent,company:state.company,elements:state.elements,sourcePdf:state.pdfBytes?Array.from(state.pdfBytes):null}}
+  $("saveProject").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(projectData())],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="cotistudio_proyecto.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$("saveStatus").textContent="Proyecto descargado"});
+  $("loadProject").addEventListener("click",()=>$("projectInput").click());
+  $("projectInput").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());state.template=data.template||"corporate";state.brand=data.brand||"#b4232d";state.accent=data.accent||"#263143";state.company=data.company||"FIREGROUP S.R.L.";state.elements=data.elements||[];$("brandColor").value=state.brand;$("accentColor").value=state.accent;$("companyName").value=state.company;updateBrand();if(data.sourcePdf){const bytes=new Uint8Array(data.sourcePdf);const blob=new Blob([bytes],{type:"application/pdf"});await loadPdf(new File([blob],data.pdfName||"cotizacion.pdf",{type:"application/pdf"}));state.elements=data.elements||[];renderElements();applyTemplate()}$("saveStatus").textContent="Proyecto cargado"}catch(err){alert("No se pudo abrir el proyecto: "+err.message)}e.target.value=""});
+  updateBrand();
+})();
+</script>
+</body>
+</html>
